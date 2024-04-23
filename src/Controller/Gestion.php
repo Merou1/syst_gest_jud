@@ -12,9 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Lawyer;
 use App\Entity\Judge;
 use App\Entity\Greffier;
-
-
-
+use PhpParser\Node\Stmt\Echo_;
 
 class Gestion extends AbstractController
 {
@@ -35,25 +33,25 @@ class Gestion extends AbstractController
     #[Route('/', name: 'signup', methods: ['POST'])]
     public function store(Request $request): Response
     {
-        // Retrieve form data
+        // nakhdou data men form
         $name = $request->request->get('name');
         $email = $request->request->get('email');
         $password = $request->request->get('password');
         $confirmpassword = $request->request->get('confirmpassword');
         $role = $request->request->get('role');
 
-
-        if (empty($name) || empty($email) || empty($password) || empty($confirmPassword) || empty($role)) {
-            // Handle empty fields 
-            return $this->redirectToRoute('signin_signup', ['error' => 'All fields are required']);
+        if (empty($name) || empty($email) || empty($password) || empty($confirmpassword) || empty($role)) {
+            $this->addFlash('error', 'All fields are required.');
+            return $this->redirectToRoute('signin_signup');
         }
 
-        // check pass
         if ($password !== $confirmpassword) {
-            return $this->redirectToRoute('signin_signup', ['error' => 'Password and confirm password do not match']);
+            $this->addFlash('error', 'Passwords do not match.');
+            return $this->redirectToRoute('signin_signup');
         }
-        
-        //user ela hssab role
+
+    
+        //user ela hssab role 
         if ($role === 'lawyer') {
             $user = new Lawyer();
         } elseif ($role === 'judge') {
@@ -61,8 +59,7 @@ class Gestion extends AbstractController
         } elseif ($role === 'greffier') {
             $user = new Greffier();
         } else {
-            // Default to User entity if role is not recognized
-            $user = new User();
+
         }
 
         // user jdid
@@ -72,6 +69,8 @@ class Gestion extends AbstractController
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+        $this->addFlash('success', 'Signup successful! Now you can sign in.');
+
 
         return $this->redirectToRoute('signin_signup');
     }

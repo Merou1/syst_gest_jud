@@ -1,70 +1,76 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Signin</title>
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css'><link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="{{ asset('css/signin.css') }}">
+{% extends 'base.html.twig' %}
 
-</head>
-<body>
-<!-- partial:index.partial.html -->
+{% block body %}
+    {% for flash_message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
 
-<div class="container" id="container">
-	<div class="form-container sign-up-container">
-		<form  method="post" action="{{ path('signup') }}">
-			<h1>Create Account</h1>
-			<select name="role">
-				<option class="option" value="lawyer">lawyer</option>
-				<option class="option" value="audiance">audiance</option>
-				<option class="option" value="jugde">judge</option>
-			</select>
-			<input id="name" name="name" type="text" placeholder="Name" />
-			<input id="email" name="email" type="email" placeholder="Email" />
-			<input id="password" name="password" type="password" placeholder="Password" />
-			<input id="confirmpassword" name="confirmpassword" type="password" placeholder="Confirm Password" />
-			<button>Sign Up</button>
-		</form>
-	</div>
-	<div class="form-container sign-in-container">
-		<form action="#">
-			<h1>Sign in</h1>
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
-			<a href="#">Forgot your password?</a>
-			<button>Sign In</button>
-		</form>
-	</div>
-	<div class="overlay-container">
-		<div class="overlay">
-			<div class="overlay-panel overlay-left">
-				<h1>Welcome Back!</h1>
-				<p>To keep connected with us please login with your personal info</p>
-				<button class="ghost" id="signIn">Sign In</button>
-			</div>
-			<div class="overlay-panel overlay-right">
-				<h1>Dont have an account?</h1>
-				<p>Enter your personal details and start journey with us</p>
-				<button class="ghost" id="signUp">Sign Up</button>
-			</div>
-		</div>
-	</div>
-</div>
+    {% for flash_message in app.flashes('error') %}
+        {% if flash_message == 'Passwords do not match.' %}
+            <div class="alert alert-danger" role="alert">
+                {{ flash_message }}
+            </div>
+        {% elseif flash_message == 'All fields are required.' %}
+            <div class="alert alert-danger" role="alert">
+                {{ flash_message }}
+            </div>
+        {% endif %}
+    {% endfor %}
 
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form method="post" action="{{ path('signup') }}">
+                <h1>Create Account</h1>
+                <select name="role">
+                    <option class="option" value="lawyer">lawyer</option>
+                    <option class="option" value="greffier">greffier</option>
+                    <option class="option" value="judge">judge</option>
+                </select>
+                <input id="name" name="name" type="text" placeholder="Name" />
+                <input id="email" name="email" type="email" placeholder="Email" />
+                <input id="password" name="password" type="password" placeholder="Password" />
+                <input id="confirmpassword" name="confirmpassword" type="password" placeholder="Confirm Password" />
+                <button>Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form action="#">
+                <h1>Sign in</h1>
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <a href="#">Forgot your password?</a>
+                <button>Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Don't have an account?</h1>
+                    <p>Click the button below</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <script  >
-  const signUpButton = document.getElementById('signUp');
-const signInButton = document.getElementById('signIn');
-const container = document.getElementById('container');
+    <script>
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('container');
 
-signUpButton.addEventListener('click', () => {
-	container.classList.add("right-panel-active");
-});
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
 
-signInButton.addEventListener('click', () => {
-	container.classList.remove("right-panel-active");
-});
-  </script>
-
-</body>
-</html>
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+    </script>
+{% endblock %}
