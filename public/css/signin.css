@@ -258,4 +258,14 @@ footer a {
     text-decoration: none;
 }
 
+.alert.alert-success{
+	color: green;
+}
+.alert.alert-danger{
+	color: red;
+	text-decoration: underline;
+	font-size: larger;
+	background-color: white;
+}
+
 

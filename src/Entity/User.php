@@ -67,5 +67,10 @@ class User
         return $this;
     }
 
+    public function getRole(): string
+    {
+        return strtolower(str_replace('App\\Entity\\', '', get_class($this)));
+    }
+
 
 }
